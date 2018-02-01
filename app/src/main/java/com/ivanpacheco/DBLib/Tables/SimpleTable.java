@@ -92,19 +92,18 @@ public class SimpleTable implements TableIPE {
     }
 
     @Override
-    public String getUpdateStatement(List<FieldValue> parameters) {
-        StringBuilder sql = new StringBuilder("UPDATE ").append(this.table.value);
-        StringBuilder fdls = new StringBuilder("(");
-        StringBuilder values = new StringBuilder("(");
+    public String getUpdateStatement(List<FieldValue> parameters, List<FieldValue> whereCondition) {
+        StringBuilder sql = new StringBuilder("UPDATE ").append(this.table.value).append(" SET ");
+        StringBuilder where = new StringBuilder("WHERE ");
 
         for(FieldValue parameter : parameters){
-            fdls.append(this.fields.get(parameter.idField).value).append(", ");
-            values.append("?").append(", ");
+            sql.append(this.fields.get(parameter.idField).value).append(" = ?, ");
         }
 
-        sql.append(fdls.substring(0, sql.length()-2)).append(") VALUES");
-        sql.append(values.substring(0, sql.length()-2)).append(")");
+        for(FieldValue condition : whereCondition){
+            where.append(this.fields.get(condition.idField).value).append(" ").append(condition.value);
+        }
 
-        return sql.toString();
+        return sql.substring(0, sql.length()-2) + where.toString();
     }
 }

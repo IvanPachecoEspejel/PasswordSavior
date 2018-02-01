@@ -12,5 +12,5 @@ import java.util.List;
 public interface TableIPE {
     String getCreateQuery();
     String getInsertStatement(List<FieldValue> parameters);
-    String getUpdateStatement(List<FieldValue> parameters);
+    String getUpdateStatement(List<FieldValue> parameters, List<FieldValue> whereCondition);
 }
