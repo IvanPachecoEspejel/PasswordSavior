@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="db_name">PASS_SAVIOR</string>
+    <integer name="db_version">1</integer>
+
+    <array name="db_tables_name">
+        <item>1.login</item>
+    </array>
+
+    <array name="db_temporary_tables">
+        <item>1.1.TEMPORARY</item>
+    </array>
+
+    <array name="db_tables_fields">
+        <item>1.1.id</item>
+        <item>1.2.user_name</item>
+        <item>1.3.password</item>
+        <item>1.4.password_type</item>
+        <item>1.5.last_update</item>
+    </array>
+
+    <array name="db_fields_types">
+        <item>1.1.1.INTEGER</item>
+        <item>1.2.1.VARCHAR(50)</item>
+        <item>1.3.1.VARCHAR(50)</item>
+        <item>1.4.1.INTEGER</item>
+        <item>1.5.1.INTEGER</item>
+    </array>
+
+    <array name="db_fields_properties">
+        <item>1.1.1.NOT NULL AUTOINCREMENT</item>
+        <item>1.2.1.NOT NULL</item>
+        <item>1.3.1.NOT NULL</item>
+        <item>1.4.1.NOT NULL</item>
+    </array>
+
+    <array name="db_table_constraint">
+        <item>1.1.CONSTRAINT id_login PRIMARY KEY (id)</item>
+    </array>
+
+</resources>
