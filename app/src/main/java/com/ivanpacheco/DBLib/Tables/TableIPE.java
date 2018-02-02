@@ -10,4 +10,5 @@ public interface TableIPE {
     String getCreateQuery();
     String getDropQuery();
     String getClearTableQuery();
+    String getColumnName(String columnId);
 }

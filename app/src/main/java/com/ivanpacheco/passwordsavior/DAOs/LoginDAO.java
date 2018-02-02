@@ -12,7 +12,6 @@ import com.ivanpacheco.DBLib.Handlers.DBHandler;
 
 public class LoginDAO extends GenericDAO {
 
-    private DBHandler dbh;
     private static String TABLE_ID = "1";
 
     private static String ID = "1";

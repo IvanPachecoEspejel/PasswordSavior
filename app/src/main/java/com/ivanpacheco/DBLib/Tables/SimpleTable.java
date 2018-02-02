@@ -15,10 +15,10 @@ import com.ivanpacheco.DBLib.util.UtilDB;
 
 public class SimpleTable implements TableIPE {
     private DBElement table;
-    private HashMap<String, DBElement> fields;
+    private HashMap<String, DBElement> columns;
     private List<DBElement> constraints;
-    private HashMap<String, List<DBElement>> fieldsType;
-    private HashMap<String, List<DBElement>> fieldsProperties;
+    private HashMap<String, List<DBElement>> columnsType;
+    private HashMap<String, List<DBElement>> columnsProperties;
 
     private Boolean isTemporal;
 
@@ -35,16 +35,16 @@ public class SimpleTable implements TableIPE {
         List<DBElement> temporary = UtilDB.getItemFromLstResource(resTblTemporary, idNames);
 
         this.isTemporal = (temporary != null && temporary.size()>0);
-        this.fields = UtilDB.getHasMapItemFromLstResource(resTblFields, idNames);
+        this.columns = UtilDB.getHasMapItemFromLstResource(resTblFields, idNames);
         this.constraints = UtilDB.getItemFromLstResource(resTblConstraints, idNames);
 
-        fieldsType = new HashMap<>();
-        fieldsProperties = new HashMap<>();
+        columnsType = new HashMap<>();
+        columnsProperties = new HashMap<>();
 
-        for(Map.Entry<String, DBElement> field : fields.entrySet()){
+        for(Map.Entry<String, DBElement> field : columns.entrySet()){
             idNames.add(field.getValue());
-            fieldsType.put(field.getValue().id, UtilDB.getItemFromLstResource(resFldsTypes, idNames));
-            fieldsProperties.put(field.getValue().id, UtilDB.getItemFromLstResource(resFldsProperties, idNames));
+            columnsType.put(field.getValue().id, UtilDB.getItemFromLstResource(resFldsTypes, idNames));
+            columnsProperties.put(field.getValue().id, UtilDB.getItemFromLstResource(resFldsProperties, idNames));
             idNames.remove(idNames.size()-1);
         }
     }
@@ -61,12 +61,12 @@ public class SimpleTable implements TableIPE {
             sql.append("TEMPORARY ");
         sql.append("TABLE IF NOT EXISTS ").append(this.table.value).append("(");
 
-        for(Map.Entry<String, DBElement> field : fields.entrySet()){
+        for(Map.Entry<String, DBElement> field : columns.entrySet()){
             sql.append(field.getValue().value).append(" ");
-            for(DBElement type : fieldsType.get(field.getValue().id)){
+            for(DBElement type : columnsType.get(field.getValue().id)){
                 sql.append(type.value).append(" ");
             }
-            for(DBElement property : fieldsProperties.get(field.getValue().id)){
+            for(DBElement property : columnsProperties.get(field.getValue().id)){
                 sql.append(property.value).append(" ");
             }
             sql.append(", ");
@@ -92,4 +92,8 @@ public class SimpleTable implements TableIPE {
         return sql.toString();
     }
 
+    @Override
+    public String getColumnName(String columnId) {
+        return this.columns.get(columnId).value;
+    }
 }
