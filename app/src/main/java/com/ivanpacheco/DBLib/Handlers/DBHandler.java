@@ -4,15 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.ivanpacheco.DBLib.util.DBElement;
-import com.ivanpacheco.DBLib.util.FieldValue;
 import com.ivanpacheco.DBLib.util.UtilDB;
 import com.ivanpacheco.passwordsavior.R;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +24,7 @@ import com.ivanpacheco.DBLib.Tables.TableIPE;
 
 public class DBHandler extends SQLiteOpenHelper{
 
-    private String LOG_TAG = "DBLib.DBHandler";
+    private String LOG_TAG = this.getClass().getName();
 
     private Resources res;
     private HashMap<String, TableIPE> tables;
@@ -80,49 +77,17 @@ public class DBHandler extends SQLiteOpenHelper{
 
     }
 
-    public long insert(String tblId, List<FieldValue> parameters){
-        long rowId = -1;
-        try{
-            this.db.beginTransaction();
-
-            String sql = tables.get(tblId).getInsertStatement(parameters);
-            SQLiteStatement statement = this.db.compileStatement(sql);
-            for(int idx = 0; idx <= parameters.size(); idx ++){
-                statement.bindString(idx, parameters.get(idx).value);
-            }
-            rowId = statement.executeInsert();
-
-            this.db.setTransactionSuccessful();
-        }catch(Exception e){
-            Log.e(LOG_TAG, e.getMessage(), e);
-        }finally {
-            db.endTransaction();
-        }
-        return rowId;
-    }
-
-    public long update(String tblId, List<FieldValue> parameters){
-        long rowId = -1;
-        try{
-            this.db.beginTransaction();
-
-            String sql = tables.get(tblId).getInsertStatement(parameters);
-            SQLiteStatement statement = this.db.compileStatement(sql);
-            for(int idx = 0; idx <= parameters.size(); idx ++){
-                statement.bindString(idx, parameters.get(idx).value);
-            }
-            rowId = statement.executeInsert();
-
-            this.db.setTransactionSuccessful();
-        }catch(Exception e){
-            Log.e(LOG_TAG, e.getMessage(), e);
-        }finally {
-            db.endTransaction();
-        }
-        return rowId;
-    }
-
-    public void delete(){
+    @Override
+    public void onOpen(SQLiteDatabase sqLiteDatabase){
 
     }
+
+    public SQLiteDatabase getDB(){
+        return this.db;
+    }
+
+    public TableIPE getTableById(String tblId){
+        return tables.get(tblId);
+    }
+
 }

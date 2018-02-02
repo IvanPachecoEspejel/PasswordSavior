@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.ivanpacheco.DBLib.util.DBElement;
-import com.ivanpacheco.DBLib.util.FieldValue;
 import com.ivanpacheco.DBLib.util.UtilDB;
 
 /**
@@ -51,6 +50,11 @@ public class SimpleTable implements TableIPE {
     }
 
     @Override
+    public String getTableName() {
+        return this.table.value;
+    }
+
+    @Override
     public String getCreateQuery(){
         StringBuilder sql = new StringBuilder("CREATE ");
         if(this.isTemporal)
@@ -75,35 +79,17 @@ public class SimpleTable implements TableIPE {
     }
 
     @Override
-    public String getInsertStatement(List<FieldValue> parameters) {
-        StringBuilder sql = new StringBuilder("INSERT OR REPLACE INTO ").append(this.table.value);
-        StringBuilder fdls = new StringBuilder("(");
-        StringBuilder values = new StringBuilder("(");
-
-        for(FieldValue parameter : parameters){
-            fdls.append(this.fields.get(parameter.idField).value).append(", ");
-            values.append("?").append(", ");
-        }
-
-        sql.append(fdls.substring(0, sql.length()-2)).append(") VALUES");
-        sql.append(values.substring(0, sql.length()-2)).append(")");
-
+    public String getDropQuery() {
+        StringBuilder sql = new StringBuilder("DROP TABLE IF EXISTS ");
+        sql.append(this.table.value);
         return sql.toString();
     }
 
     @Override
-    public String getUpdateStatement(List<FieldValue> parameters, List<FieldValue> whereCondition) {
-        StringBuilder sql = new StringBuilder("UPDATE ").append(this.table.value).append(" SET ");
-        StringBuilder where = new StringBuilder("WHERE ");
-
-        for(FieldValue parameter : parameters){
-            sql.append(this.fields.get(parameter.idField).value).append(" = ?, ");
-        }
-
-        for(FieldValue condition : whereCondition){
-            where.append(this.fields.get(condition.idField).value).append(" ").append(condition.value);
-        }
-
-        return sql.substring(0, sql.length()-2) + where.toString();
+    public String getClearTableQuery() {
+        StringBuilder sql =  new StringBuilder("DELETE FROM ");
+        sql.append(this.table.value);
+        return sql.toString();
     }
+
 }
