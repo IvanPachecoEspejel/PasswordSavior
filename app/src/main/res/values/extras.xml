@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="isFirstTime">isFirstTime</string>
+    <string name="isFirstTimePass">isFirstTimePass</string>
+    <string name="isFirstTimeTypePass">isFirstTimeTypePass</string>
+    <string name="encryptor">encryptor</string>
+</resources>

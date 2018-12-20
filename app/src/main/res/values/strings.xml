@@ -1,6 +1,32 @@
 <resources>
+    <string name="unique_app_name">%#$PasswordSavior%#$</string>
     <string name="app_name">PasswordSavior</string>
-    <string name="actLogin_btn_login">DESBLOQUEAR</string>
-    <string name="actLogin_lbl_title">Ingresa a tus contraseñas</string>
-    <string name="actLogin_lbl_inptText">Contraseña maestra: </string>
-</resources>
+    
+    <string name="search_hint">Aplicaciones</string>
+    
+    <string name="actLogin_btn_login">OK</string>
+
+    <string name="lblTxtTitle">Ingresa tu contraseña</string>
+
+    <string name="lblPatterTitle">Ingresa el patron</string>
+
+    <string name="lblPinTitle">Ingresa el código</string>
+    <string name="a2Btn1">1</string>
+    <string name="a2Btn2">2</string>
+    <string name="a2Btn3">3</string>
+    <string name="a2Btn4">4</string>
+    <string name="a2Btn5">5</string>
+    <string name="a2Btn6">6</string>
+    <string name="a2Btn7">7</string>
+    <string name="a2Btn8">8</string>
+    <string name="a2Btn9">9</string>
+    <string name="a2Btn0">0</string>
+    <string name="a2BtnB">Back</string>
+
+    <string name="txtPasssInc">Contraseña incorrecta</string>
+    <string name="pattPasssInc">Patrón incorrecto</string>
+    <string name="pinPasssInc">Código incorrecto</string>
+
+    <string name="passIncorrect">La contraseña que ingreso no coincide</string>
+
+    </resources>

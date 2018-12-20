@@ -1,5 +1,6 @@
 package com.ivanpacheco.DBLib.Tables;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import com.ivanpacheco.DBLib.util.UtilDB;
  * Class that abstract a simple sqlite table without complex attributes
  */
 
-public class SimpleTable implements TableIPE {
+public class SimpleTable implements Table {
     private DBElement table;
     private HashMap<String, DBElement> columns;
     private List<DBElement> constraints;
@@ -22,16 +23,16 @@ public class SimpleTable implements TableIPE {
 
     private Boolean isTemporal;
 
-    public SimpleTable(String table,
+    public SimpleTable(String resTable,
                        List<String> resTblTemporary,
                        List<String> resTblFields,
                        List<String> resTblConstraints,
                        List<String> resFldsTypes,
                        List<String> resFldsProperties){
 
-        this.table = UtilDB.processDBResource(table);
+        this.table = UtilDB.processDBResource(resTable);
 
-        List<DBElement> idNames = Collections.singletonList(this.table);
+        List<DBElement> idNames = new ArrayList<>(Collections.singletonList(this.table));
         List<DBElement> temporary = UtilDB.getItemFromLstResource(resTblTemporary, idNames);
 
         this.isTemporal = (temporary != null && temporary.size()>0);
@@ -55,45 +56,50 @@ public class SimpleTable implements TableIPE {
     }
 
     @Override
+    public String getTableId() {
+        return this.table.id;
+    }
+
+    @Override
     public String getCreateQuery(){
         StringBuilder sql = new StringBuilder("CREATE ");
         if(this.isTemporal)
             sql.append("TEMPORARY ");
         sql.append("TABLE IF NOT EXISTS ").append(this.table.value).append("(");
 
-        for(Map.Entry<String, DBElement> field : columns.entrySet()){
-            sql.append(field.getValue().value).append(" ");
-            for(DBElement type : columnsType.get(field.getValue().id)){
+        for(Map.Entry<String, DBElement> column : columns.entrySet()){
+            sql.append("'").append(column.getValue().value).append("' ");
+            for(DBElement type : columnsType.get(column.getValue().id)){
                 sql.append(type.value).append(" ");
             }
-            for(DBElement property : columnsProperties.get(field.getValue().id)){
+            for(DBElement property : columnsProperties.get(column.getValue().id)){
                 sql.append(property.value).append(" ");
             }
             sql.append(", ");
         }
         for(DBElement constraint : constraints){
-
-            sql.append(constraint).append(", ");
+            sql.append(constraint.value).append(", ");
         }
         return sql.substring(0, sql.length()-2) + ")";
     }
 
     @Override
     public String getDropQuery() {
-        StringBuilder sql = new StringBuilder("DROP TABLE IF EXISTS ");
-        sql.append(this.table.value);
-        return sql.toString();
+        return "DROP TABLE IF EXISTS "+this.table.value;
     }
 
     @Override
     public String getClearTableQuery() {
-        StringBuilder sql =  new StringBuilder("DELETE FROM ");
-        sql.append(this.table.value);
-        return sql.toString();
+        return "DELETE FROM " + this.table.value;
     }
 
     @Override
     public String getColumnName(String columnId) {
         return this.columns.get(columnId).value;
+    }
+
+    @Override
+    public HashMap<String, DBElement> getColumns() {
+        return this.columns;
     }
 }
